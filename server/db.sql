@@ -1,3 +1,6 @@
+drop table if exists task;
+drop table if exists account;
+
 create table task (id serial primary key, description varchar(255) not null);
 
 insert into task (description) values
@@ -8,4 +11,10 @@ insert into task (description) values
 ('Test the new features'),
 ('Fix the reported bugs'),
 ('Deploy the application to production'),
-('Cónduct a code review with peers');
+('Conduct a code review with peers');
+
+create table account(
+    id serial primary key,
+    email varchar(50) not null unique,
+    password varchar(255) not null
+);
