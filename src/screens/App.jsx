@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useUser } from '../context/useUser.js'
+import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import axios from 'axios'
-import Row from './components/Row'
+import Row from '../components/Row'
 
 const url = "http://localhost:3001"
 
 function App() {
   const [task, setTask] = useState('')
   const [tasks, setTasks] = useState([])
+  const { user } = useUser()
 
   useEffect(() => {
     axios.get(url)
@@ -22,9 +24,10 @@ function App() {
   }, [])
 
   const addTask = () => {
+    const headers = { headers: { Authorization: user.token } }
     const newTask = { description: task }
     
-    axios.post(url + "/create", { task: newTask })
+    axios.post(url + "/create", { task: newTask }, headers)
       .then(response => {
         setTasks([...tasks, response.data])
         setTask('')
@@ -35,7 +38,9 @@ function App() {
   }
 
   const deleteTask = (deleted) => {
-    axios.delete(url + "/delete/" + deleted)
+    const headers = { headers: { Authorization: user.token } }
+    
+    axios.delete(url + "/delete/" + deleted, headers)
       .then(response => {
         setTasks(tasks.filter(item => item.id !== deleted))
       })
