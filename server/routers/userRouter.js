@@ -54,13 +54,12 @@ router.post('/signin', (req, res, next) => {
                 error.status = 401
                 return next(error)
             }
-        })
-
-        const token = sign({ user: dbUser.email }, process.env.JWT_SECRET_KEY)
-        res.status(200).json({
-            id: dbUser.id,
-            email: dbUser.email,
-            token
+            const token = sign({ user: dbUser.email }, process.env.JWT_SECRET_KEY)
+            res.status(200).json({
+                id: dbUser.id,
+                email: dbUser.email,
+                token
+            })
         })
     })
 })
